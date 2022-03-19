@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
+import { ClienteComponent } from 'app/cliente/cliente.component';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
-
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -13,7 +12,7 @@ export const AdminLayoutRoutes: Routes = [
     // path: '',
     // children: [ {
     //   path: 'userprofile',
-    //   component: UserProfileComponent
+    //   component: ClienteComponent
     // }]
     // }, {
     //   path: '',
@@ -24,7 +23,7 @@ export const AdminLayoutRoutes: Routes = [
     // }, {
     //     path: '',
     //     children: [ {
-    //         path: 'notifications',
+    //         path: 'notificações',
     //         component: NotificationsComponent
     //     }]
     // }, {
@@ -47,5 +46,5 @@ export const AdminLayoutRoutes: Routes = [
     //     }]
     // }
     { path: 'dashboard',      component: DashboardComponent },
-    { path: 'user-profile',   component: UserProfileComponent },
+    { path: 'cliente',   component: ClienteComponent },
 ];

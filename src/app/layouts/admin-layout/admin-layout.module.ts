@@ -8,8 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
+import { ClienteComponent } from 'app/cliente/cliente.component';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 
 @NgModule({
@@ -27,7 +27,7 @@ import { AdminLayoutRoutes } from './admin-layout.routing';
   ],
   declarations: [
     DashboardComponent,
-    UserProfileComponent,
+    ClienteComponent,
   ]
 })
 
