@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { ClienteService } from 'app/services/cliente.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface EnumSimNao {
   value: string;
@@ -26,6 +29,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./cliente.component.css']
 })
 export class ClienteComponent implements OnInit {
+
+  products = [];
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
   isLinear = false;
 
   matcher = new MyErrorStateMatcher();
@@ -39,6 +46,9 @@ export class ClienteComponent implements OnInit {
     { value: 'PF', viewValue: 'Pessoa Física' },
     { value: 'PJ', viewValue: 'Pessoa Jurídica' },
   ];
+
+  constructor(private fb: FormBuilder, private clienteService: ClienteService) { }
+
 
   clienteForm = this.fb.group({
     email: ['', Validators.required, Validators.email],
@@ -62,16 +72,21 @@ export class ClienteComponent implements OnInit {
     ])
   });
 
-
-
   ngOnInit() {
+    this.clienteService.sendGetRequest().pipe(takeUntil(this.destroy$)).subscribe((data: any[]) => {
+      console.log(data);
+      this.products = data;
+    })
+  }
+  ngOnDestroy() {
+    this.destroy$.next(true);
+    // Unsubscribe from the subject
+    this.destroy$.unsubscribe();
   }
 
   get aliases() {
     return this.clienteForm.get('aliases') as FormArray;
   }
-
-  constructor(private fb: FormBuilder) { }
 
   salvar() {
     this.clienteForm.patchValue({
@@ -88,5 +103,6 @@ export class ClienteComponent implements OnInit {
 
   onSubmit() {
     console.log(this.clienteForm.value);
+    this.clienteService.save();
   }
 }
