@@ -1,88 +1,115 @@
 <div class="main-content">
   <div class="container-fluid">
-      <div class="row">
-          <div class="col-md-8">
-              <div class="card">
-                  <div class="card-header card-header-danger">
-                      <h4 class="card-title">Cliente</h4>
-                      <p class="card-category">Complete your profile</p>
-                  </div>
-                  <div class="card-body">
-                      <form>
-                          <div class="row">
-                              <div class="col-md-5">
-                                <mat-form-field class="example-full-width">
-                                    <input matInput placeholder="Company (disabled)" disabled>
-                                  </mat-form-field>
-                              </div>
-                              <div class="col-md-3">
-                                  <mat-form-field class="example-full-width">
-                                    <input matInput placeholder="Username">
-                                  </mat-form-field>
-                              </div>
-                              <div class="col-md-4">
-                                  <mat-form-field class="example-full-width">
-                                    <input matInput placeholder="Email address" type="email">
-                                  </mat-form-field>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-md-6">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Fist Name" type="text">
-                                </mat-form-field>
-                              </div>
-                              <div class="col-md-6">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Last Name" type="text">
-                                </mat-form-field>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-md-12">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Adress" type="text">
-                                </mat-form-field>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-md-4">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="City" type="text">
-                                </mat-form-field>
-                              </div>
-                              <div class="col-md-4">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Country" type="text">
-                                </mat-form-field>
-                              </div>
-                              <div class="col-md-4">
-                                <mat-form-field class="example-full-width">
-                                  <input matInput placeholder="Postal Code" type="text">
-                                </mat-form-field>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-md-12">
-                                <label>About Me</label>
-                                <mat-form-field class="example-full-width">
-                                   <textarea matInput placeholder="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."></textarea>
-                                 </mat-form-field>
-                                  <!-- <div class="form-group">
-
-                                      <div class="form-group">
-                                          <label class="bmd-label-floating"> Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</label>
-                                          <textarea class="form-control" rows="5"></textarea>
-                                      </div>
-                                  </div> -->
-                              </div>
-                          </div>
-                          <button mat-raised-button type="submit" class="btn btn-danger pull-right">Update Profile</button>
-                          <div class="clearfix"></div>
-                      </form>
-                  </div>
-              </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title">Cliente</h4>
+            <p class="card-category">Preencha os dados</p>
           </div>
+          <div class="card-body">
+            <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+              <mat-stepper [linear]="isLinear" #stepper>
+                <mat-step label="Dados Iniciais">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill">
+                        <mat-label>E-mail</mat-label>
+                        <input type="email" matInput formControlName="email" [errorStateMatcher]="matcher"
+                          placeholder="Ex. pat@example.com" required>
+                        <mat-error *ngIf="clienteForm.hasError('email') && !clienteForm.hasError('required')">
+                          Informe um e-mail válido.
+                        </mat-error>
+                        <mat-error *ngIf="clienteForm.hasError('required')">
+                          O e-mail é <strong>obrigatório</strong>.
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Permite o recebimento de e-mail?</mat-label>
+                        <mat-select formControlName="permiteRecebimentoEmail" name="permiteRecebimentoEmail">
+                          <mat-option *ngFor="let simNao of listaEnumSimNao" [value]="simNao.value">
+                            {{simNao.viewValue}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Tipo Pessoa</mat-label>
+                        <mat-select formControlName="tipoPessoa" name="tipoPessoa">
+                          <mat-option *ngFor="let tipoPessoa of listaEnumTipoPessoa" [value]="tipoPessoa.value">
+                            {{tipoPessoa.viewValue}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <button mat-button matStepperNext>Próximo</button>
+                </mat-step>
+
+                <mat-step formGroupName="pessoaFisica" label="Pessoa Física" *ngIf="clienteForm.value.tipoPessoa === 'PF'">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Nome completo</mat-label>
+                        <input matInput formControlName="nomeCompleto" required>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill">
+                        <mat-label>CPF</mat-label>
+                        <input matInput formControlName="cpf" mask="000.000.000-00" required>
+                        <mat-error *ngIf="clienteForm.hasError('required')"> </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <button mat-button matStepperPrevious>Voltar</button>
+                  <button mat-button matStepperNext>Próximo</button>
+                </mat-step>
+
+                <mat-step formGroupName="pessoaJuridica" label="Pessoa Jurídica" *ngIf="clienteForm.value.tipoPessoa === 'PJ'">
+                  <div class="row">
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Razão Social</mat-label>
+                        <input matInput formControlName="razaoSocial" required>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col-md-5">
+                      <mat-form-field appearance="fill">
+                        <mat-label>CNPJ</mat-label>
+                        <input matInput formControlName="cnpj" mask="000.000.000/0000-00" required>
+                        <mat-error *ngIf="clienteForm.hasError('required')"> </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <button mat-button matStepperPrevious>Voltar</button>
+                  <button mat-button matStepperNext>Próximo</button>
+                </mat-step>
+
+                <mat-step formGroupName="endereco" label="Endereço">
+                  <mat-form-field appearance="fill">
+                    <mat-label>CEP</mat-label>
+                    <input matInput formControlName="cep" mask="00000-000" required>
+                    <mat-error *ngIf="clienteForm.hasError('required')"> </mat-error>
+                  </mat-form-field>
+
+                  <button mat-button matStepperPrevious>Voltar</button>
+                </mat-step>
+              </mat-stepper>
+              <div class="col-md-5">
+                <p>Form Value: {{ clienteForm.value | json }}</p>
+              </div>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right">Salvar</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
       </div>
-  </div>
-</div>

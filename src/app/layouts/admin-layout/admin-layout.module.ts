@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { ClienteComponent } from 'app/cliente/cliente.component';
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { AdminLayoutRoutes } from './admin-layout.routing';
 
@@ -27,7 +26,6 @@ import { AdminLayoutRoutes } from './admin-layout.routing';
   ],
   declarations: [
     DashboardComponent,
-    ClienteComponent,
   ]
 })
 
